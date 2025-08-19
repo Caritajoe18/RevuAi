@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RevuAI | Smarter Feedback. Better Decisions.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Stone, blue, Slate) -->
+    <!-- Application Structure Plan: The application is structured as a narrative journey to explain the RevuAI concept. It starts with a high-level introduction (Hero), moves to a visual explanation of the process ("How It Works"), allows a deep-dive into specific features via interactive tabs, compares benefits side-by-side, and culminates in a simulated, interactive dashboard. This structure was chosen to make a text-heavy concept note tangible and engaging, guiding the user from "what is it?" to "how would I use it?" rather than just presenting a wall of text. The interactive chart is the centerpiece, demonstrating the core value proposition of data analysis in a hands-on way. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Core process flow -> Goal: Organize -> Viz/Presentation: HTML/CSS step-by-step diagram -> Interaction: Scroll-based highlighting (future) / Static visual flow -> Justification: Visually simplifies the user and business journey. -> Library/Method: Tailwind CSS Flexbox/Grid.
+        - Report Info: Key Features list -> Goal: Inform/Organize -> Viz/Presentation: Tabbed content area -> Interaction: Click to reveal feature details -> Justification: Prevents information overload by breaking down dense text into user-selectable chunks. -> Library/Method: Vanilla JS.
+        - Report Info: Business Dashboard Analytics (Feedback Frequency) -> Goal: Compare/Change -> Viz/Presentation: Bar Chart -> Interaction: Buttons to filter data by time (Weekly, Monthly, Quarterly) -> Justification: Directly simulates the primary function of the analytics dashboard, making the concept of data-driven insights interactive and understandable. -> Library/Method: Chart.js (Canvas).
+        - Report Info: Benefits for Businesses/Customers -> Goal: Compare -> Viz/Presentation: Two-column layout -> Interaction: Static -> Justification: Clearly and efficiently communicates the value proposition to both target audiences. -> Library/Method: Tailwind CSS Grid.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-button.active {
+            background-color: #0E5FD8;
+            color: #ffffff;
+        }
+        .feature-tab.active {
+            background-color: #0E5FD8;
+            color: #ffffff;
+            border-color: #0E5FD8;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-blue-700">
+                RevuAI
+            </div>
+            <div class="hidden md:flex items-center space-x-2">
+                <a href="#how-it-works" class="nav-button px-4 py-2 rounded-md text-slate-600 hover:bg-blue-100 hover:text-blue-800 transition-colors">How It Works</a>
+                <a href="#features" class="nav-button px-4 py-2 rounded-md text-slate-600 hover:bg-blue-100 hover:text-blue-800 transition-colors">Features</a>
+                <a href="#dashboard-demo" class="nav-button px-4 py-2 rounded-md text-slate-600 hover:bg-blue-100 hover:text-blue-800 transition-colors">Dashboard Demo</a>
+                <a href="#benefits" class="nav-button px-4 py-2 rounded-md text-slate-600 hover:bg-blue-100 hover:text-blue-800 transition-colors">Benefits</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-slate-600 hover:bg-blue-100 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2">
+            <a href="#how-it-works" class="block nav-button px-4 py-2 rounded-md text-slate-600 hover:bg-blue-100 hover:text-blue-800 transition-colors">How It Works</a>
+            <a href="#features" class="block nav-button px-4 py-2 rounded-md text-slate-600 hover:bg-blue-100 hover:text-blue-800 transition-colors">Features</a>
+            <a href="#dashboard-demo" class="block nav-button px-4 py-2 rounded-md text-slate-600 hover:bg-blue-100 hover:text-blue-800 transition-colors">Dashboard Demo</a>
+            <a href="#benefits" class="block nav-button px-4 py-2 rounded-md text-slate-600 hover:bg-blue-100 hover:text-blue-800 transition-colors">Benefits</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-16">
+
+        <section id="hero" class="text-center mb-20 md:mb-32">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4">Smarter Feedback. Better Decisions.</h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 mb-10">
+                RevuAI is a simple AI tool that helps businesses collect and analyze customer feedback, delivering actionable daily and weekly recommendations.
+            </p>
+            <p> <a href="https://forms.gle/EE2gVMah3ntVsXRG9" target="_blank" class="feature-tab w-full text-left p-4 border border-slate-300 rounded-lg hover:bg-blue-50 hover:bg-blue-50 hover:border-blue-500 hover:text-blue-500 transition-all active"> Get Started Free</a></p>
+        </section>
+
+        <section id="how-it-works" class="mb-20 md:mb-32">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900">From Scan to Smart Decisions in 3 Simple Steps</h2>
+                <p class="max-w-2xl mx-auto mt-4 text-slate-600">With RevuAI, collecting and acting on customer feedback is effortless. Just a quick scan, instant feedback, and actionable insights—all in one seamless flow.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="flex flex-col items-center">
+                    <div class="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-4">1</div>
+                    <h3 class="text-xl font-semibold mb-2">Scan the QR Code</h3>
+                    <p class="text-slate-500">Customers simply scan a unique QR code at your business location or on a product—no app required.</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-4">2</div>
+                    <h3 class="text-xl font-semibold mb-2">Share Feedback Instantly</h3>
+                    <p class="text-slate-500">They’re taken to a mobile-friendly page where they can leave ratings and reviews, and even upload photos or videos — anonymously or with an account.</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-4">3</div>
+                    <h3 class="text-xl font-semibold mb-2">Get Actionable Insights</h3>
+                    <p class="text-slate-500">RevuAI organizes and analyzes feedback in your private dashboard, highlighting trends, prioritizing recurring issues, and delivering clear, data-driven recommendations.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="mb-20 md:mb-32">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">What Powers RevuAI</h2>
+                <p class="max-w-2xl mx-auto mt-4 text-slate-600">Discover the key features that make RevuAI simple, smart, and effective — from QR code feedback collection to loyalty programs that keep customers engaged.</p>
+            </div>
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/3">
+                    <ul class="space-y-2">
+                        <li><button data-target="feature-qr" class="feature-tab w-full text-left p-4 border border-slate-300 rounded-lg hover:bg-blue-50 hover:border-blue-500 hover:text-blue-500 transition-all active">Unique QR Codes</button></li>
+                        <li><button data-target="feature-dashboard" class="feature-tab w-full text-left p-4 border border-slate-300 rounded-lg hover:bg-blue-50 hover:border-blue-500 hover:text-blue-500 transition-all">Analytics Dashboard</button></li>
+                        <li><button data-target="feature-loyalty" class="feature-tab w-full text-left p-4 border border-slate-300 rounded-lg hover:bg-blue-50 hover:border-blue-500 hover:text-blue-500 transition-all">Loyalty Programs</button></li>
+                        <li><button data-target="feature-interface" class="feature-tab w-full text-left p-4 border border-slate-300 rounded-lg hover:bg-blue-50 hover:border-blue-500 hover:text-blue-500 transition-all">User Feedback Interface</button></li>
+                    </ul>
+                </div>
+                <div class="md:w-2/3 bg-white p-8 rounded-lg shadow-lg min-h-[300px]">
+                    <div id="feature-qr" class="feature-content">
+                        <h3 class="text-2xl font-bold mb-4">QR Code Generation & Deployment</h3>
+                        <p class="text-slate-600 space-y-3">
+                            <span><strong>Business-Specific Codes:</strong> Generate codes for your physical locations to gather general feedback.</span><br><br>
+                            <span><strong>Product-Specific Codes:</strong> Attach QR codes to individual products for granular reviews and performance tracking.</span><br><br>
+                            <span><strong>Customizable:</strong> Add your branding for a seamless customer experience.</span>
+                        </p>
+                    </div>
+                    <div id="feature-dashboard" class="feature-content hidden">
+                        <h3 class="text-2xl font-bold mb-4">Comprehensive Business Dashboard</h3>
+                        <p class="text-slate-600 space-y-3">
+                            <span><strong>Centralized View:</strong> See all feedback in one secure place.</span><br><br>
+                            <span><strong>Automated Summaries:</strong> AI-powered reports highlight key themes, common complaints, and praises.</span><br><br>
+                            <span><strong>Frequency Prioritization:</strong> Automatically identify and flag the most frequent feedback points so you know what to tackle first.</span><br><br>
+                             <span><strong>Multimedia Reports:</strong> Generate audio/video summaries for quick, digestible weekly updates.</span>
+                        </p>
+                    </div>
+                    <div id="feature-loyalty" class="feature-content hidden">
+                        <h3 class="text-2xl font-bold mb-4">Loyalty Program Integration</h3>
+                        <p class="text-slate-600 space-y-3">
+                            <span><strong>Track Engagement:</strong> Monitor feedback submissions from registered users.</span><br><br>
+                            <span><strong>Incentivize Feedback:</strong> Create custom loyalty programs to reward your most engaged customers with bonuses and offers.</span><br><br>
+                            <span><strong>Build Community:</strong> Encourage repeat feedback and turn customers into loyal advocates for your brand.</span>
+                        </p>
+                    </div>
+                    <div id="feature-interface" class="feature-content hidden">
+                        <h3 class="text-2xl font-bold mb-4">Intuitive User Feedback Interface</h3>
+                        <p class="text-slate-600 space-y-3">
+                            <span><strong>Instant & App-less:</strong> A direct link to a mobile-optimized web page.</span><br><br>
+                            <span><strong>Multi-Format Feedback:</strong> Users can submit text, ratings, images, and even short videos.</span><br><br>
+                            <span><strong>Anonymity & Accounts:</strong> Users can choose to submit anonymously or create an account to participate in loyalty programs.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard-demo" class="mb-20 md:mb-32 bg-white p-6 md:p-10 rounded-lg shadow-xl">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Interactive Dashboard Demo</h2>
+                <p class="max-w-3xl mx-auto mt-4 text-slate-600">This is a simulation of the core of the RevuAI business dashboard. Here, you can see how feedback is categorized and quantified. Use the filters to see how insights can change over different time periods, demonstrating the power of identifying recurring trends.</p>
+            </div>
+            <div class="text-center mb-8">
+                <div class="inline-flex rounded-md shadow-sm" role="group">
+                    <button type="button" data-period="weekly" class="time-filter-btn px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-700 rounded-l-lg hover:bg-blue-700 hover:text-blue-500">
+                        Weekly
+                    </button>
+                    <button type="button" data-period="monthly" class="time-filter-btn px-4 py-2 text-sm font-medium text-blue-600 bg-white border-t border-b border-blue-700 hover:bg-blue-50 hover:text-blue-500">
+                        Monthly
+                    </button>
+                    <button type="button" data-period="quarterly" class="time-filter-btn px-4 py-2 text-sm font-medium text-blue-600 bg-white border border-blue-700 rounded-r-md hover:bg-blue-50 hover:text-blue-500">
+                        Quarterly
+                    </button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="feedbackChart"></canvas>
+            </div>
+        </section>
+
+        <section id="benefits" class="mb-20">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">A Win-Win Platform</h2>
+                <p class="max-w-2xl mx-auto mt-4 text-slate-600">RevuAI is designed to create value for both sides of the counter — from businesses seeking to improve and for customers who want their voices heard.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4 text-blue-700">For Businesses</h3>
+                    <ul class="space-y-3 text-slate-600">
+                        <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">✓</span><span><strong>Real-time Insights:</strong> Get immediate, unfiltered feedback at the point of experience.</span></li>
+                        <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">✓</span><span><strong>Data-Driven Decisions:</strong> Make informed choices based on summarized and prioritized data.</span></li>
+                        <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">✓</span><span><strong>Improved Satisfaction:</strong> Proactively address issues and enhance positive experiences.</span></li>
+                        <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">✓</span><span><strong>Increased Loyalty:</strong> Build a loyal following through recognition and incentives.</span></li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4 text-blue-700">For Customers</h3>
+                    <ul class="space-y-3 text-slate-600">
+                        <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">✓</span><span><strong>Effortless Submission:</strong> A quick, convenient way to share opinions.</span></li>
+                        <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">✓</span><span><strong>Feel Heard:</strong> Know your feedback directly contributes to improvements.</span></li>
+                        <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">✓</span><span><strong>Anonymity Option:</strong> Comfort in providing honest feedback without revealing your identity.</span></li>
+                        <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">✓</span><span><strong>Get Rewarded:</strong> Benefit from loyalty programs for active participation.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-slate-800 text-white">
+        <div class="container mx-auto px-6 py-8 text-center text-slate-400">
+            <p class="font-bold text-lg text-white mb-2">RevuAI</p>
+            <p>&copy; 2025 RevuAI. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-button');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            const featureTabs = document.querySelectorAll('.feature-tab');
+            const featureContents = document.querySelectorAll('.feature-content');
+
+            featureTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    featureTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    const targetId = tab.dataset.target;
+                    featureContents.forEach(content => {
+                        if (content.id === targetId) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const mockData = {
+                weekly: {
+                    labels: ['Slow Service', 'Great Atmosphere', 'Product Quality', 'Cleanliness', 'Price', 'Staff Friendliness'],
+                    data: [12, 19, 8, 15, 5, 22]
+                },
+                monthly: {
+                    labels: ['Slow Service', 'Great Atmosphere', 'Product Quality', 'Cleanliness', 'Price', 'Staff Friendliness'],
+                    data: [45, 80, 35, 62, 25, 95]
+                },
+                quarterly: {
+                    labels: ['Slow Service', 'Great Atmosphere', 'Product Quality', 'Cleanliness', 'Price', 'Staff Friendliness'],
+                    data: [130, 250, 110, 190, 80, 310]
+                }
+            };
+
+            const ctx = document.getElementById('feedbackChart').getContext('2d');
+            let feedbackChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: mockData.weekly.labels,
+                    datasets: [{
+                        label: '# of Mentions',
+                        data: mockData.weekly.data,
+                        backgroundColor: 'rgba(14, 95, 216, 0.6)',
+                        borderColor: 'rgba(14, 95, 216, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.2)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#1e293b',
+                            titleFont: {
+                                size: 16
+                            },
+                            bodyFont: {
+                                size: 14
+                            },
+                            padding: 12,
+                            cornerRadius: 6
+                        }
+                    }
+                }
+            });
+
+            const timeFilterBtns = document.querySelectorAll('.time-filter-btn');
+            timeFilterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    timeFilterBtns.forEach(b => {
+                        b.classList.remove('bg-blue-600', 'text-white');
+                        b.classList.add('bg-white', 'text-blue-600');
+                    });
+                    btn.classList.add('bg-blue-600', 'text-white');
+                    btn.classList.remove('bg-white', 'text-blue-600');
+
+                    const period = btn.dataset.period;
+                    feedbackChart.data.labels = mockData[period].labels;
+                    feedbackChart.data.datasets[0].data = mockData[period].data;
+                    feedbackChart.update();
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
